@@ -3,13 +3,13 @@ from typing import Optional
 
 
 class Settings(BaseSettings):
-    # JWT設定
-    SECRET_KEY: str = "your-secret-key-here-change-in-production"
+    # JWT設定（環境変数または .env で必須設定。既知のデフォルト値は置かない）
+    SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
-    # データベース
-    DATABASE_URL: str = "sqlite:///./pixeon.db"
+    # データベース（環境変数または .env で必須設定。認証情報をコードに埋めない）
+    DATABASE_URL: str
 
     # AWS設定
     AWS_ACCESS_KEY_ID: Optional[str] = None
@@ -27,3 +27,6 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+if settings.SECRET_KEY == "your-secret-key-here-change-in-production":
+    raise RuntimeError("SECRET_KEY must be changed from the known placeholder value")
